@@ -61,4 +61,16 @@ public class PetsService
             con.Close();
         }
     }
+    public void DeletePet(int id)
+    {
+        using (SqlConnection con = new(conString))
+        {
+            string query = $"DELETE FROM Pets WHERE Id = @id";
+            SqlCommand cmd = new SqlCommand(query, con);
+            cmd.Parameters.Add("@id", System.Data.SqlDbType.Int).Value = id;
+            con.Open();
+            cmd.ExecuteNonQuery();
+            con.Close();
+        }
+    }
 }

@@ -19,6 +19,7 @@ else
     <table class="table">
         <thead>
             <tr>
+                <th></th>
                 <th>Id</th>
                 <th>Name</th>
                 <th>Species</th>
@@ -32,6 +33,7 @@ else
             @foreach (var pet in pets)
             {
                 <tr>
+                    <td><button @onclick="()=>Delete(pet.Id)">X</button></td>
                     <td>@pet.Id</td>
                     <td>@pet.Name</td>
                     <td>@pet.Species</td>
@@ -43,6 +45,7 @@ else
             }
             <tr>
                 <td><button @onclick="AddNew">Add</button></td>
+                <td></td>
                 <td><input type="text" placeholder="Name..." @bind="pet.Name"></td>
                 <td><input type="text" placeholder="Species..." @bind="pet.Species"></td>
                 <td><input type="text" placeholder="Breed..." @bind="pet.Breed"></td>
@@ -64,6 +67,10 @@ else
         new PetsService().CreatePet(pet);
         pet = new();
         pets = new PetsService().ReadPets("SELECT * FROM Pets");
-
     }
+    private void Delete(int id)
+    {
+        new PetsService().DeletePet(id);
+        pets = new PetsService().ReadPets("SELECT * FROM Pets");
+    } 
 }
