@@ -30,34 +30,56 @@ else
             </tr>
         </thead>
         <tbody>
-            @foreach (var pet in pets)
+            @foreach (var petItem in pets)
             {
-                <tr>
-                    <td><button @onclick="()=>Delete(pet.Id)">X</button></td>
-                    <td>@pet.Id</td>
-                    <td>@pet.Name</td>
-                    <td>@pet.Species</td>
-                    <td>@pet.Breed</td>
-                    <td>@pet.Colour</td>
-                    <td>@pet.Speed</td>
-                    <td>@pet.Price</td>
-                </tr>
+                @if (updateId == petItem.Id)
+                {
+                    <tr>
+                        <td><button @onclick="()=>{pet = petItem;Update();}">Update</button></td>
+                        <td></td>
+                        <td><input type="text" @bind="petItem.Name"></td>
+                        <td><input type="text" @bind="petItem.Species"></td>
+                        <td><input type="text" @bind="petItem.Breed"></td>
+                        <td><input type="text" @bind="petItem.Colour"></td>
+                        <td><input type="text" @bind="petItem.Speed"></td>
+                        <td><input type="text" @bind="petItem.Price"></td>
+                    </tr>
+                }
+                else
+                {
+                    <tr>
+                        <td>
+                            <button @onclick="()=>updateId = petItem.Id">Update</button>
+                            <button @onclick="()=>Delete(petItem.Id)">Delete</button>
+                        </td>
+                        <td>@petItem.Id</td>
+                        <td>@petItem.Name</td>
+                        <td>@petItem.Species</td>
+                        <td>@petItem.Breed</td>
+                        <td>@petItem.Colour</td>
+                        <td>@petItem.Speed</td>
+                        <td>@petItem.Price</td>
+                    </tr>
+                }
+
             }
-            <tr>
-                <td><button @onclick="AddNew">Add</button></td>
-                <td></td>
-                <td><input type="text" placeholder="Name..." @bind="pet.Name"></td>
-                <td><input type="text" placeholder="Species..." @bind="pet.Species"></td>
-                <td><input type="text" placeholder="Breed..." @bind="pet.Breed"></td>
-                <td><input type="text" placeholder="Colour..." @bind="pet.Colour"></td>
-                <td><input type="text" placeholder="Speed..." @bind="pet.Speed"></td>
-                <td><input type="text" placeholder="Price..." @bind="pet.Price"></td>
-            </tr>   
+                <tr>
+                    <td><button @onclick="AddNew">Add</button></td>
+                    <td></td>
+                    <td><input type="text" placeholder="Name..." @bind="pet.Name"></td>
+                    <td><input type="text" placeholder="Species..." @bind="pet.Species"></td>
+                    <td><input type="text" placeholder="Breed..." @bind="pet.Breed"></td>
+                    <td><input type="text" placeholder="Colour..." @bind="pet.Colour"></td>
+                    <td><input type="text" placeholder="Speed..." @bind="pet.Speed"></td>
+                    <td><input type="text" placeholder="Price..." @bind="pet.Price"></td>
+                </tr>   
         </tbody>
     </table>
 }
 
 @code {
+    int? updateId;
+
     Pets? pet = new();
     private List<Pets>? pets =
         new PetsService().ReadPets("SELECT * FROM Pets");
@@ -73,4 +95,15 @@ else
         new PetsService().DeletePet(id);
         pets = new PetsService().ReadPets("SELECT * FROM Pets");
     } 
+    private void Update()
+    {
+        new PetsService().UpdatePet(pet);
+        pet = new();
+        updateId = null;
+        pets = new PetsService().ReadPets("SELECT * FROM Pets");
+    }
+    private void GetList()
+    {
+        pets = new PetsService().ReadPets("SELECT * FROM Pets");
+    }
 }
