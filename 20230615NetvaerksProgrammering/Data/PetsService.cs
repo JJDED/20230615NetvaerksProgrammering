@@ -4,13 +4,10 @@ namespace _20230615NetvaerksProgrammering.Data;
 
 public class PetsService
 {
-    //Connection string shouldnt be public accessable
     private string conString = "Data Source=192.168.1.2;Initial Catalog=Pets;User ID=sa;Password=Passw0rd;";
 
     public Pets ReadPets()
     {
-        //int id, string? name, string? brand, int rAM, string? gPU, string? cPU, float price)
-
         return new Pets(1, "John", "Cat", "Sphinx", "Pink", 15, 6000);
     }
 
@@ -67,7 +64,6 @@ public class PetsService
         {
             string query = $"DELETE FROM Pets WHERE Id = {id}";
             SqlCommand cmd = new SqlCommand(query, con);
-            //cmd.Parameters.Add("@id", System.Data.SqlDbType.Int).Value = id;
             con.Open();
             cmd.ExecuteNonQuery();
             con.Close();
