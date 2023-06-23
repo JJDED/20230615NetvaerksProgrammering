@@ -1,7 +1,7 @@
 ﻿using System.Drawing;
 
 namespace _20230615NetvaerksProgrammering.Data;
-
+//Færdige
 public class Pets
 {
     public Pets()
